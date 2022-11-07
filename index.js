@@ -7,16 +7,13 @@ app.use(express.json());
 
 const users = [];
 const tweets = [];
-let sessionId = -1;
 
 function signUpUser(user) {
-  sessionId++;
   users.push(user);
 }
 
 function sendTweet(tweet) {
   let newTweet = tweet;
-  newTweet.userId = sessionId;
   tweets.push(newTweet);
 }
 
@@ -27,10 +24,12 @@ function getTweets() {
     if (i > 9) {
       break;
     }
-    const user = users[tweets[j].userId];
+
+    const user = users.filter((user) => user.username == tweets[j].username);
+    console.log(user);
     const temp = {
       username: tweets[j].username,
-      avatar: user.avatar,
+      avatar: user[0].avatar,
       tweet: tweets[j].tweet,
     };
     toSend.push(temp);
